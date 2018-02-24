@@ -25,12 +25,14 @@ dimitris = "/ip4/10.189.102.241/tcp/9096/ipfs/Qmdo7ML44MUmqHCqBsAZsv1WKMCQh3kjck
 sonke = "/ip4/10.189.102.255/tcp/9096/ipfs/QmUPavTLbQqw89HsUPWRMuFs6SS54FGcSKLAmFF9hs6EZC"
 deniz = "/ip4/10.189.103.0/tcp/9096/ipfs/QmR2qzY2jknHDPG4pngt3fdYrCfWay2w9iXAr6GmZNUBfq"
 ayham = "/ip4/10.189.103.10/tcp/9096/ipfs/Qmbc9RPXaBvCdWvvbqRb8CRFekSKYp6auxsAh3e6N5S5ow"
+simone = "/ip4/10.189.102.254/tcp/9096/ipfs/QmeAsyicNP9EXfD5kW12bGfdUGPnTjpmhgoWv1zGyMvink"
 
 data['cluster']['peers'] = []
 data['cluster']['peers'].append(dimitris)
 data['cluster']['peers'].append(sonke)
 data['cluster']['peers'].append(deniz)
 data['cluster']['peers'].append(ayham)
+data['cluster']['peers'].append(simone)
 
 # save the data
 with open(json_filename, 'w') as outfile:  
