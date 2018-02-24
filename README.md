@@ -12,6 +12,7 @@ To sync:
 ```
 cd https://github.com/DaMaHub/ipfs-cluster-demo
 git pull
+killall ipfs-cluster-service
 ./edit-service-json.py
 rm -rf $HOME/.ipfs-cluster/ipfs-cluster-data && ipfs-cluster-service
 ```
