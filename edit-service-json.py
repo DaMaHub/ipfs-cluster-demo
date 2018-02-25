@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import json
+import os
 from os.path import expanduser
 from shutil import copyfile
 from collections import OrderedDict
@@ -10,6 +11,10 @@ home = expanduser("~")
 
 # the file to edit
 json_filename = home + '/.ipfs-cluster/service.json' 
+
+# create an original copy
+if not os.path.exists('json_filename' + '.orig'):
+    copyfile(json_filename, json_filename + '.orig')
 
 # make a backup file
 copyfile(json_filename, json_filename + '.bak')
