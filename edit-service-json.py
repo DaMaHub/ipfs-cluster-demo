@@ -1,30 +1,12 @@
 #!/usr/bin/env python
 
+import sys
+import argparse
 import json
 import os
 from os.path import expanduser
 from shutil import copyfile
 from collections import OrderedDict
-
-# get the home folder
-home = expanduser("~")
-
-# the file to edit
-json_filename = home + '/.ipfs-cluster/service.json' 
-
-# create an original copy
-if not os.path.exists('json_filename' + '.orig'):
-    copyfile(json_filename, json_filename + '.orig')
-
-# make a backup file
-copyfile(json_filename, json_filename + '.bak')
-
-# load the data
-json_data = open(json_filename).read()
-data = json.loads(json_data, object_pairs_hook=OrderedDict)
-
-# edit the data
-data['cluster']['secret'] = 'af204ff961615e83fbf9f8b19d669e2b39e9fc9d469f0394481dcb92b35a096a'
 
 master_servers = [
     "/ip4/104.155.88.57/tcp/9096/ipfs/Qmf27Vo9MAn9EmqgXZ57pjDmEsZx82n8gGY65ZggPVBYoK",
@@ -39,7 +21,7 @@ ayham = "/ip4/10.189.103.10/tcp/9096/ipfs/Qmbc9RPXaBvCdWvvbqRb8CRFekSKYp6auxsAh3
 simone = "/ip4/10.189.102.254/tcp/9096/ipfs/QmeAsyicNP9EXfD5kW12bGfdUGPnTjpmhgoWv1zGyMvink"
 denis = "/ip4/10.189.102.224/tcp/9096/ipfs/Qmck9UaVJXpmQ9gbvcAL8T8DPVnUNoq57BXTeAHtpQkrCL"
 
-peers = [
+peers = master_servers + [
     dimitris,
     sonke,
     deniz,
@@ -48,10 +30,49 @@ peers = [
     denis
 ]
 
-data['cluster']['peers'] = []
-data['cluster']['peers'].extend(master_servers)
-data['cluster']['peers'].extend(peers)
+secret = 'af204ff961615e83fbf9f8b19d669e2b39e9fc9d469f0394481dcb92b35a096a'
 
-# save the data
-with open(json_filename, 'w') as outfile:  
+def parse():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--show-peers-current', action='store_true')
+    parser.add_argument('--show-peers-to-be', action='store_true')
+    return parser.parse_args()
+
+def show_peers(peers):
+    for i in peers:
+        print '%s' % str(i)
+
+args = parse()
+
+# get the home folder
+home = expanduser("~")
+
+# the file to edit
+json_filename = home + '/.ipfs-cluster/service.json'
+
+# create an original copy
+if not os.path.exists('json_filename' + '.orig'):
+    copyfile(json_filename, json_filename + '.orig')
+
+# make a backup file
+copyfile(json_filename, json_filename + '.bak')
+
+# load the data
+json_data = open(json_filename).read()
+data = json.loads(json_data, object_pairs_hook=OrderedDict)
+
+if args.show_peers_current:
+    show_peers(data['cluster']['peers'])
+    sys.exit(0)
+
+if args.show_peers_to_be:
+    show_peers(peers)
+    sys.exit(0)
+
+# edit the json model data
+data['cluster']['secret'] = secret
+data['cluster']['peers'] = peers
+
+# save the json data
+with open(json_filename, 'w') as outfile:
     json.dump(data, outfile, indent=4)
